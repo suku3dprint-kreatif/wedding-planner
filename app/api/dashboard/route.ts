@@ -42,6 +42,10 @@ export async function GET(request: NextRequest) {
       where: { workspaceId },
     });
 
+    const giftItems = await prisma.giftItem.findMany({
+      where: { workspaceId },
+    });
+
     // Calculate totals
     const tasksTotal = timelines.length;
     const tasksCompleted = timelines.filter(
@@ -68,6 +72,15 @@ export async function GET(request: NextRequest) {
       0n
     );
 
+    const totalGiftCost = giftItems.reduce(
+      (sum, item) => sum + item.price,
+      0n
+    );
+
+    const giftCompleted = giftItems.filter(
+      (item) => item.status === 'COMPLETED'
+    ).length;
+
     return NextResponse.json(
       {
         workspace: {
@@ -82,6 +95,8 @@ export async function GET(request: NextRequest) {
           totalPaid: Number(totalPaid),
           totalSavings: Number(totalSavings),
           guestCount,
+          totalGiftCost: Number(totalGiftCost),
+          giftCompleted,
         },
       },
       { status: 200 }
