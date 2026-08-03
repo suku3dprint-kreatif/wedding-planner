@@ -307,14 +307,38 @@ DELETE /api/admin/[id] - Delete item
 
 ---
 
-## 🛠️ Phase 3.4+ - TODO
+## ✅ Phase 3.4 - COMPLETED
 
-### Module 7: Kontak Vendor
-- [ ] Vendor management dengan kategori
-- [ ] Contact info: telepon (klik untuk call/WA)
-- [ ] Status: Rencana / Fix Kerjasama
-- [ ] Filter by status & kategori
-- [ ] Notes field untuk catatan tambahan
+### Module 7: Kontak Vendor ✅ DONE
+Features implemented:
+- [x] Vendor management dengan custom kategori
+- [x] Contact info: telepon dengan click-to-call & WhatsApp integration
+- [x] Status: PLANNING / CONTRACTED tracking
+- [x] Filter by status & kategori
+- [x] Notes field untuk catatan tambahan
+- [x] Edit/delete vendor entries
+- [x] Summary cards (total, planning, contracted)
+
+**API endpoints**:
+```
+GET /api/vendors - List vendors with filtering & summary
+POST /api/vendors - Create vendor
+PATCH /api/vendors/[id] - Update vendor
+DELETE /api/vendors/[id] - Delete vendor
+```
+
+**Status**: Fully functional with:
+- Phone icon untuk direct call
+- WhatsApp icon untuk instant messaging
+- Status badges (PLANNING/CONTRACTED)
+- Category-based filtering
+- Mobile-responsive layout
+- Dark mode support
+- Dashboard integration
+
+---
+
+## 🛠️ Phase 3.5+ - TODO
 
 ### Module 9: Rundown Acara (Skipped - Optional)
 - [ ] Event-based rundown (per acara)
@@ -475,6 +499,14 @@ PATCH /api/admin/[id] - Update item status
 DELETE /api/admin/[id] - Delete item
 ```
 
+### Vendor (Kontak Vendor)
+```
+GET /api/vendors - List vendors with filtering & summary
+POST /api/vendors - Create vendor
+PATCH /api/vendors/[id] - Update vendor
+DELETE /api/vendors/[id] - Delete vendor
+```
+
 ---
 
 ## 🐛 Known Issues & Limitations
@@ -495,17 +527,18 @@ DELETE /api/admin/[id] - Delete item
 | 3.1 | Seserahan (✅) | ✅ COMPLETE | 100% |
 | 3.2 | Tamu (✅) | ✅ COMPLETE | 100% |
 | 3.3 | Administrasi (✅) | ✅ COMPLETE | 100% |
-| 3.4+ | Vendor, Lagu | 📋 TODO | 0% |
+| 3.4 | Vendor (✅) | ✅ COMPLETE | 100% |
+| 3.5+ | Lagu | 📋 TODO | 0% |
 
-**Modules Implemented: 8/10** ✅ 
-- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan, Tamu, Administrasi
+**Modules Implemented: 9/10** ✅ 
+- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan, Tamu, Administrasi, Vendor
 
 **Recent Completions**:
+- ✅ Phase 3.4: Kontak Vendor (vendor management, phone/WA integration, filtering)
 - ✅ Phase 3.3: List Administrasi (document checklist, progress tracking)
 - ✅ Phase 3.2: List Tamu (guest categories, groom/bride breakdown, comparison chart)
 - ✅ Phase 3.1: Seserahan (gifts, categories, status tracking, visualizations)
 - ✅ Phase 2.2: Budget Events (events, items, dynamic payments, charts)
-- ✅ Phase 2.1: Savings tracking (monthly, progress, visualization)
 
 ---
 
@@ -529,7 +562,9 @@ app/
 │   │   └── page.tsx           # Guest management (DONE)
 │   ├── admin/
 │   │   └── page.tsx           # Administration checklist (DONE)
-│   ├── vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
+│   ├── vendors/
+│   │   └── page.tsx           # Vendor management (DONE)
+│   ├── rundown/ + songs/      # Placeholder modules (TODO)
 │   └── layout.tsx             # Protected layout + navigation
 │
 ├── (auth)/                     # Public routes
@@ -553,6 +588,7 @@ app/
 │   ├── gifts/                 # Gifts endpoints (DONE)
 │   ├── guests/                # Guests endpoints (DONE)
 │   ├── admin/                 # Admin endpoints (DONE)
+│   ├── vendors/               # Vendor endpoints (DONE)
 │   └── dashboard/             # Summary data
 │
 ├── components/                # Reusable UI
