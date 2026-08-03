@@ -247,7 +247,37 @@ DELETE /api/gifts/[id] - Delete gift item
 
 ---
 
-## 🛠️ Phase 3.2+ - TODO
+## ✅ Phase 3.2 - COMPLETED
+
+### Module 8: List Tamu ✅ DONE
+Features implemented:
+- [x] Guest category tracking (Keluarga, Teman, Kolega, etc)
+- [x] Input per kategori untuk masing-masing pihak (groom & bride)
+- [x] Automatic total calculation (per category & overall)
+- [x] Bar chart perbandingan pihak pria vs wanita
+- [x] Edit categories dengan inline form
+- [x] Delete dengan confirmation dialog
+- [x] Summary cards dengan guest breakdown
+
+**API endpoints**:
+```
+GET /api/guests - List categories with summary (totalGroom, totalBride, totalGuests)
+POST /api/guests - Create guest category
+PATCH /api/guests/[id] - Update category counts
+DELETE /api/guests/[id] - Delete category
+```
+
+**Status**: Fully functional with:
+- Recharts bar chart (groom vs bride comparison per category)
+- Edit/delete functionality for categories
+- Summary metrics (total, groom count, bride count, category count)
+- Mobile-responsive layout
+- Dark mode support
+- Dashboard integration
+
+---
+
+## 🛠️ Phase 3.3+ - TODO
 
 ### Module 6: List Administrasi
 - [ ] Flexible checklist untuk dokumen administrasi
@@ -261,13 +291,6 @@ DELETE /api/gifts/[id] - Delete gift item
 - [ ] Status: Rencana / Fix Kerjasama
 - [ ] Filter by status & kategori
 - [ ] Notes field untuk catatan tambahan
-
-### Module 8: List Tamu
-- [ ] Guest category tracking (Keluarga, Teman, Kolega, etc)
-- [ ] Input per kategori untuk masing-masing pihak
-- [ ] Automatic total calculation
-- [ ] Chart perbandingan pihak pria vs wanita
-- [ ] (Optional) Detail mode dengan RSVP tracking
 
 ### Module 9: Rundown Acara
 - [ ] Event-based rundown (per acara)
@@ -412,6 +435,14 @@ PATCH /api/gifts/[id] - Update gift status
 DELETE /api/gifts/[id] - Delete gift item
 ```
 
+### Tamu (Guests)
+```
+GET /api/guests - List categories with summary
+POST /api/guests - Create guest category
+PATCH /api/guests/[id] - Update category counts
+DELETE /api/guests/[id] - Delete category
+```
+
 ---
 
 ## 🐛 Known Issues & Limitations
@@ -430,12 +461,14 @@ DELETE /api/gifts/[id] - Delete gift item
 | 1 | Infra, Auth, Dashboard, Timeline, Budget Scenarios | ✅ DONE | 100% |
 | 2 | Tabungan (✅), Budget Events (✅) | ✅ COMPLETE | 100% |
 | 3.1 | Seserahan (✅) | ✅ COMPLETE | 100% |
-| 3.2+ | Admin, Vendor, Tamu, Rundown, Lagu | 📋 TODO | 0% |
+| 3.2 | Tamu (✅) | ✅ COMPLETE | 100% |
+| 3.3+ | Admin, Vendor, Rundown, Lagu | 📋 TODO | 0% |
 
-**Modules Implemented: 6/10** ✅ 
-- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan
+**Modules Implemented: 7/10** ✅ 
+- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan, Tamu
 
 **Recent Completions**:
+- ✅ Phase 3.2: List Tamu (guest categories, groom/bride breakdown, comparison chart)
 - ✅ Phase 3.1: Seserahan (gifts, categories, status tracking, visualizations)
 - ✅ Phase 2.2: Budget Events (events, items, dynamic payments, charts)
 - ✅ Phase 2.1: Savings tracking (monthly, progress, visualization)
@@ -459,7 +492,9 @@ app/
 │   │   └── page.tsx           # Savings tracking (DONE)
 │   ├── gifts/
 │   │   └── page.tsx           # Seserahan/gifts (DONE)
-│   ├── guests/ + admin/ + vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
+│   ├── guests/
+│   │   └── page.tsx           # Guest management (DONE)
+│   ├── admin/ + vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
 │   └── layout.tsx             # Protected layout + navigation
 │
 ├── (auth)/                     # Public routes
@@ -481,6 +516,7 @@ app/
 │   │   └── payments/          # Payment endpoints (DONE)
 │   ├── savings/               # Savings endpoints (DONE)
 │   ├── gifts/                 # Gifts endpoints (DONE)
+│   ├── guests/                # Guests endpoints (DONE)
 │   └── dashboard/             # Summary data
 │
 ├── components/                # Reusable UI
