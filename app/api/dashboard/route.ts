@@ -38,6 +38,10 @@ export async function GET(request: NextRequest) {
       where: { workspaceId },
     });
 
+    const savingsRecords = await prisma.savingsRecord.findMany({
+      where: { workspaceId },
+    });
+
     // Calculate totals
     const tasksTotal = timelines.length;
     const tasksCompleted = timelines.filter(
@@ -59,6 +63,11 @@ export async function GET(request: NextRequest) {
       0
     );
 
+    const totalSavings = savingsRecords.reduce(
+      (sum, record) => sum + record.amountFromGroom + record.amountFromBride,
+      0n
+    );
+
     return NextResponse.json(
       {
         workspace: {
@@ -71,6 +80,7 @@ export async function GET(request: NextRequest) {
           tasksCompleted,
           totalBudget: Number(totalBudget),
           totalPaid: Number(totalPaid),
+          totalSavings: Number(totalSavings),
           guestCount,
         },
       },

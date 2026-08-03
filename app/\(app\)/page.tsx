@@ -26,6 +26,7 @@ interface Dashboard {
     tasksCompleted: number;
     totalBudget: number;
     totalPaid: number;
+    totalSavings: number;
     guestCount: number;
   };
 }
@@ -94,7 +95,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {/* Progress Timeline */}
         <Card>
           <CardHeader title="Progress Timeline" subtitle={`${data.stats.tasksCompleted}/${data.stats.tasksTotal} task`} />
@@ -123,6 +124,22 @@ export default function DashboardPage() {
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400">
               dari {formatRupiah(data.stats.totalBudget)}
+            </p>
+          </div>
+        </Card>
+
+        {/* Savings Status */}
+        <Card>
+          <CardHeader title="Tabungan Terkumpul" subtitle={formatRupiah(data.stats.totalSavings)} />
+          <div className="space-y-3">
+            <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
+              <div
+                className="bg-orange-600 h-2 rounded-full transition-all"
+                style={{ width: `${Math.min((data.stats.totalSavings / data.stats.totalBudget) * 100, 100)}%` }}
+              ></div>
+            </div>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              target {formatRupiah(data.stats.totalBudget)}
             </p>
           </div>
         </Card>
