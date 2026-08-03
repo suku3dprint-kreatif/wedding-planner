@@ -50,6 +50,10 @@ export async function GET(request: NextRequest) {
       where: { workspaceId },
     });
 
+    const adminItems = await prisma.administrationItem.findMany({
+      where: { workspaceId },
+    });
+
     // Calculate totals
     const tasksTotal = timelines.length;
     const tasksCompleted = timelines.filter(
@@ -92,6 +96,10 @@ export async function GET(request: NextRequest) {
       (item) => item.status === 'COMPLETED'
     ).length;
 
+    const adminCompleted = adminItems.filter(
+      (item) => item.status === 'COMPLETED'
+    ).length;
+
     return NextResponse.json(
       {
         workspace: {
@@ -110,6 +118,8 @@ export async function GET(request: NextRequest) {
           giftCompleted,
           totalGuestGroom,
           totalGuestBride,
+          adminTotal: adminItems.length,
+          adminCompleted,
         },
       },
       { status: 200 }
