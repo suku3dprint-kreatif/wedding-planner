@@ -1,0 +1,50 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getWorkspaceId } from '@/app/lib/auth';
+import { prisma } from '@/app/lib/db';
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const workspaceId = await getWorkspaceId();
+    if (!workspaceId) {
+      return NextResponse.json(
+        { message: 'Tidak ada workspace' },
+        { status: 401 }
+      );
+    }
+
+    // Verify ownership through budget item -> event
+    const payment = await prisma.budgetPayment.findFirst({
+      where: {
+        id: params.id,
+        budgetItem: {
+          event: { workspaceId },
+        },
+      },
+    });
+
+    if (!payment) {
+      return NextResponse.json(
+        { message: 'Pembayaran tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    await prisma.budgetPayment.delete({
+      where: { id: params.id },
+    });
+
+    return NextResponse.json(
+      { message: 'Pembayaran berhasil dihapus' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Delete payment error:', error);
+    return NextResponse.json(
+      { message: 'Terjadi kesalahan server' },
+      { status: 500 }
+    );
+  }
+}
