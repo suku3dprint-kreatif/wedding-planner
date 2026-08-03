@@ -1,0 +1,284 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  id                    String     @id @default(cuid())
+
+  // Pasangan info
+  groomName             String
+  brideName             String
+  weddingDate           DateTime
+  passcode              String     // 6-digit PIN hashed
+
+  // Relations
+  timelines             Timeline[]
+  budgetScenarios       BudgetScenario[]
+  weddingEvents         WeddingEvent[]
+  savingsRecords        SavingsRecord[]
+  giftItems             GiftItem[]
+  administrationItems   AdministrationItem[]
+  vendors               Vendor[]
+  guestCategories       GuestCategory[]
+  songs                 Song[]
+
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  @@index([passcode])
+}
+
+// Module 1: Timeline Persiapan
+model Timeline {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String
+  startDate    DateTime
+  endDate      DateTime
+  status       TaskStatus @default(PENDING)
+  description  String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([status])
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// Module 2: Skenario Budget
+model BudgetScenario {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String   // e.g. "Sederhana", "Menengah", "Mewah"
+  items        BudgetScenarioItem[]
+  isOfficial   Boolean  @default(false)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([isOfficial])
+}
+
+model BudgetScenarioItem {
+  id           String   @id @default(cuid())
+  scenarioId   String
+  scenario     BudgetScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  name         String
+  amount       BigInt   // in Rupiah
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([scenarioId])
+}
+
+// Module 3: Anggaran Pernikahan & Wedding Events
+model WeddingEvent {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String   // e.g. "Lamaran", "Akad", "Resepsi"
+  eventDate    DateTime?
+  budgetItems  BudgetItem[]
+  rundowns     EventRundown[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+}
+
+model BudgetItem {
+  id                    String   @id @default(cuid())
+  eventId               String
+  event                 WeddingEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name                  String
+  initialAmount         BigInt   // Tagihan awal
+  payments              BudgetPayment[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([eventId])
+}
+
+model BudgetPayment {
+  id           String   @id @default(cuid())
+  budgetItemId String
+  budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id], onDelete: Cascade)
+
+  paymentType  String   // "DP", "TERMIN_1", "TERMIN_2", etc
+  amount       BigInt   // in Rupiah
+  paidDate     DateTime
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([budgetItemId])
+  @@index([paymentType])
+}
+
+// Module 4: Target Tabungan
+model SavingsRecord {
+  id                 String   @id @default(cuid())
+  workspaceId        String
+  workspace          Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  month              Int      // 1-12
+  year               Int
+  amountFromGroom    BigInt   // in Rupiah
+  amountFromBride    BigInt   // in Rupiah
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([workspaceId, month, year])
+  @@index([workspaceId])
+}
+
+// Module 5: List Seserahan
+model GiftItem {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String
+  category     String   // Custom categories/tags
+  price        BigInt   // in Rupiah
+  status       ItemStatus @default(PENDING)
+  purchaseLink String?
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([category])
+}
+
+enum ItemStatus {
+  PENDING
+  IN_PROCESS
+  COMPLETED
+}
+
+// Module 6: List Administrasi
+model AdministrationItem {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String   // e.g. "FC KTP", "Surat Kesehatan", "Pendaftaran KUA"
+  status       Boolean  @default(false) // true = selesai
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([status])
+}
+
+// Module 7: Kontak Vendor
+model Vendor {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  category     String   // e.g. "Venue", "Catering", "Dekorasi", "Fotografi"
+  name         String
+  phoneNumber  String
+  pic          String?  // Person in Charge
+  status       VendorStatus @default(PLANNING)
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([category])
+}
+
+enum VendorStatus {
+  PLANNING
+  CONFIRMED
+}
+
+// Module 8: List Tamu
+model GuestCategory {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  name         String   // e.g. "Keluarga", "Teman", "Kolega"
+  groomCount   Int      @default(0)
+  brideCount   Int      @default(0)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+}
+
+// Module 9: Rundown Acara
+model EventRundown {
+  id           String   @id @default(cuid())
+  eventId      String
+  event        WeddingEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  order        Int      // Urutan acara
+  startTime    DateTime
+  activity     String
+  pic          String?  // Person in Charge
+  description  String?
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([eventId])
+  @@index([order])
+}
+
+// Module 10: List Lagu
+model Song {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  title        String
+  artist       String
+  category     String?  // e.g. "Akad", "Resepsi", "Entrance"
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([category])
+}

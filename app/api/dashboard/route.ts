@@ -1,0 +1,86 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getWorkspaceId } from '@/app/lib/auth';
+import { prisma } from '@/app/lib/db';
+
+export async function GET(request: NextRequest) {
+  try {
+    const workspaceId = await getWorkspaceId();
+
+    if (!workspaceId) {
+      return NextResponse.json(
+        { message: 'Tidak ada workspace' },
+        { status: 401 }
+      );
+    }
+
+    const workspace = await prisma.workspace.findUnique({
+      where: { id: workspaceId },
+    });
+
+    if (!workspace) {
+      return NextResponse.json(
+        { message: 'Workspace tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    // Get stats
+    const timelines = await prisma.timeline.findMany({
+      where: { workspaceId },
+    });
+
+    const budgetItems = await prisma.budgetItem.findMany({
+      where: { event: { workspaceId } },
+      include: { payments: true },
+    });
+
+    const guestCategories = await prisma.guestCategory.findMany({
+      where: { workspaceId },
+    });
+
+    // Calculate totals
+    const tasksTotal = timelines.length;
+    const tasksCompleted = timelines.filter(
+      (t) => t.status === 'COMPLETED'
+    ).length;
+
+    const totalBudget = budgetItems.reduce(
+      (sum, item) => sum + item.initialAmount,
+      0n
+    );
+
+    const totalPaid = budgetItems.reduce((sum, item) => {
+      const itemPaid = item.payments.reduce((s, p) => s + p.amount, 0n);
+      return sum + itemPaid;
+    }, 0n);
+
+    const guestCount = guestCategories.reduce(
+      (sum, cat) => sum + cat.groomCount + cat.brideCount,
+      0
+    );
+
+    return NextResponse.json(
+      {
+        workspace: {
+          groomName: workspace.groomName,
+          brideName: workspace.brideName,
+          weddingDate: workspace.weddingDate,
+        },
+        stats: {
+          tasksTotal: tasksTotal || 0,
+          tasksCompleted,
+          totalBudget: Number(totalBudget),
+          totalPaid: Number(totalPaid),
+          guestCount,
+        },
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Dashboard error:', error);
+    return NextResponse.json(
+      { message: 'Terjadi kesalahan server' },
+      { status: 500 }
+    );
+  }
+}
