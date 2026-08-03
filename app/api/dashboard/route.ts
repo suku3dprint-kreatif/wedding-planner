@@ -46,6 +46,10 @@ export async function GET(request: NextRequest) {
       where: { workspaceId },
     });
 
+    const guestCategories = await prisma.guestCategory.findMany({
+      where: { workspaceId },
+    });
+
     // Calculate totals
     const tasksTotal = timelines.length;
     const tasksCompleted = timelines.filter(
@@ -62,10 +66,17 @@ export async function GET(request: NextRequest) {
       return sum + itemPaid;
     }, 0n);
 
-    const guestCount = guestCategories.reduce(
-      (sum, cat) => sum + cat.groomCount + cat.brideCount,
+    const totalGuestGroom = guestCategories.reduce(
+      (sum, cat) => sum + cat.groomCount,
       0
     );
+
+    const totalGuestBride = guestCategories.reduce(
+      (sum, cat) => sum + cat.brideCount,
+      0
+    );
+
+    const guestCount = totalGuestGroom + totalGuestBride;
 
     const totalSavings = savingsRecords.reduce(
       (sum, record) => sum + record.amountFromGroom + record.amountFromBride,
@@ -97,6 +108,8 @@ export async function GET(request: NextRequest) {
           guestCount,
           totalGiftCost: Number(totalGiftCost),
           giftCompleted,
+          totalGuestGroom,
+          totalGuestBride,
         },
       },
       { status: 200 }
