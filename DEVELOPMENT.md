@@ -104,15 +104,22 @@
 - `PATCH /api/savings/[id]` - Update record
 - `DELETE /api/savings/[id]` - Delete record
 
-#### 5. List Seserahan (Priority: MEDIUM - Phase 3)
-- Database schema ready, placeholder UI ready
-- Ready for implementation
+#### 5. List Seserahan ✅ DONE
+- [x] Create gift items dengan kategori/tags custom
+- [x] Price input dengan Rupiah formatting
+- [x] Status tracking: PENDING → IN_PROCESS → COMPLETED
+- [x] Purchase link (optional)
+- [x] Group display by kategori (collapsible)
+- [x] Total harga seserahan otomatis
+- [x] Checklist interface dengan status toggle
+
+**Status**: Fully functional
 
 #### 6-10. Admin, Vendor, Tamu, Rundown, Lagu
 - Database schemas ready, placeholder UIs ready
 - Ready for Phase 3+ implementation
 
-**Status**: 5/10 modules fully implemented, 5/10 ready for development
+**Status**: 6/10 modules fully implemented, 4/10 ready for development
 
 ### Code Quality
 - [x] TypeScript strict mode
@@ -206,7 +213,41 @@ Features to implement:
 
 ---
 
-## 🛠️ Phase 3 - TODO
+## ✅ Phase 3.1 - COMPLETED
+
+### Module 5: List Seserahan ✅ DONE
+Features implemented:
+- [x] Create gift items dengan custom kategori
+- [x] Price input dengan automatic Rupiah formatting
+- [x] Status tracking: PENDING → IN_PROCESS → COMPLETED (circular toggle)
+- [x] Purchase link support (optional) dengan external link open
+- [x] Group display by kategori dengan collapsible sections
+- [x] Total harga seserahan otomatis
+- [x] Pie chart status distribution visualization
+- [x] Delete dengan confirmation dialog
+- [x] Notes field untuk catatan tambahan per item
+- [x] Dashboard integration dengan gift cost & completion stats
+
+**API endpoints**:
+```
+GET /api/gifts - List gifts with summary (totalCost, completedCount, etc)
+POST /api/gifts - Create gift item
+PATCH /api/gifts/[id] - Update gift status
+DELETE /api/gifts/[id] - Delete gift item
+```
+
+**Status**: Fully functional with:
+- Recharts pie chart (status distribution)
+- Collapsible category sections
+- Circular status toggle buttons
+- Purchase link support with external icon
+- Form validation and error handling
+- Mobile-responsive layout
+- Dark mode support
+
+---
+
+## 🛠️ Phase 3.2+ - TODO
 
 ### Module 6: List Administrasi
 - [ ] Flexible checklist untuk dokumen administrasi
@@ -363,16 +404,22 @@ POST /api/budget/scenarios/[id]/set-official - Mark as official
 DELETE /api/budget/scenarios/[id] - Delete scenario
 ```
 
+### Seserahan (Gifts)
+```
+GET /api/gifts - List gifts with summary
+POST /api/gifts - Create gift item
+PATCH /api/gifts/[id] - Update gift status
+DELETE /api/gifts/[id] - Delete gift item
+```
+
 ---
 
 ## 🐛 Known Issues & Limitations
 
 ### Current
-1. Lokal database: Requires `npx prisma dev` untuk Postgres setup
-2. Budget events: Framework ready tapi UI belum selesai
-3. Charts: Recharts imported tapi belum diimplementasi di visualisasi
+1. Lokal database: Requires `npx prisma dev` untuk Postgres setup (handled by Vercel deployment)
 
-### None critical - All core features working ✅
+### None critical - All Phase 1-3.1 features working ✅
 
 ---
 
@@ -382,13 +429,14 @@ DELETE /api/budget/scenarios/[id] - Delete scenario
 |-------|---------|--------|-----------|
 | 1 | Infra, Auth, Dashboard, Timeline, Budget Scenarios | ✅ DONE | 100% |
 | 2 | Tabungan (✅), Budget Events (✅) | ✅ COMPLETE | 100% |
-| 3 | Seserahan, Admin, Vendor | 📋 TODO | 0% |
-| 4 | Tamu, Rundown, Lagu, Polish | 📋 TODO | 0% |
+| 3.1 | Seserahan (✅) | ✅ COMPLETE | 100% |
+| 3.2+ | Admin, Vendor, Tamu, Rundown, Lagu | 📋 TODO | 0% |
 
-**Modules Implemented: 5/10** ✅ 
-- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events
+**Modules Implemented: 6/10** ✅ 
+- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan
 
 **Recent Completions**:
+- ✅ Phase 3.1: Seserahan (gifts, categories, status tracking, visualizations)
 - ✅ Phase 2.2: Budget Events (events, items, dynamic payments, charts)
 - ✅ Phase 2.1: Savings tracking (monthly, progress, visualization)
 - ✅ Dashboard: Integrated summaries from all modules
@@ -406,8 +454,12 @@ app/
 │   ├── budget/
 │   │   ├── page.tsx           # Budget hub
 │   │   ├── scenarios/         # Skenario budget (DONE)
-│   │   └── events/            # Budget official (TODO)
-│   ├── savings/ + guests/ + ...  # Placeholder modules
+│   │   └── events/            # Budget events (DONE)
+│   ├── savings/
+│   │   └── page.tsx           # Savings tracking (DONE)
+│   ├── gifts/
+│   │   └── page.tsx           # Seserahan/gifts (DONE)
+│   ├── guests/ + admin/ + vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
 │   └── layout.tsx             # Protected layout + navigation
 │
 ├── (auth)/                     # Public routes
@@ -421,10 +473,14 @@ app/
 │   │   ├── login/
 │   │   ├── check/
 │   │   └── logout/
-│   ├── timelines/             # Timeline endpoints
+│   ├── timelines/             # Timeline endpoints (DONE)
 │   ├── budget/
-│   │   ├── scenarios/         # Scenario endpoints
-│   │   └── events/            # Event endpoints (TODO)
+│   │   ├── scenarios/         # Scenario endpoints (DONE)
+│   │   ├── events/            # Event endpoints (DONE)
+│   │   ├── items/             # Budget item endpoints (DONE)
+│   │   └── payments/          # Payment endpoints (DONE)
+│   ├── savings/               # Savings endpoints (DONE)
+│   ├── gifts/                 # Gifts endpoints (DONE)
 │   └── dashboard/             # Summary data
 │
 ├── components/                # Reusable UI
