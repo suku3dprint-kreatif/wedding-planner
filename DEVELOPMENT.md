@@ -104,15 +104,15 @@
 - `PATCH /api/savings/[id]` - Update record
 - `DELETE /api/savings/[id]` - Delete record
 
-#### 5-10. Placeholder Modules
-- [ ] Budget Events page (framework ready - Phase 2.2)
-- [ ] List Seserahan placeholder
-- [ ] List Administrasi placeholder
-- [ ] Kontak Vendor placeholder
-- [ ] List Tamu placeholder
-- [ ] List Lagu placeholder
+#### 5. List Seserahan (Priority: MEDIUM - Phase 3)
+- Database schema ready, placeholder UI ready
+- Ready for implementation
 
-**Status**: Placeholder UI ready, database schema ready, API endpoints pending (Phase 3+)
+#### 6-10. Admin, Vendor, Tamu, Rundown, Lagu
+- Database schemas ready, placeholder UIs ready
+- Ready for Phase 3+ implementation
+
+**Status**: 5/10 modules fully implemented, 5/10 ready for development
 
 ### Code Quality
 - [x] TypeScript strict mode
@@ -161,27 +161,36 @@ DELETE /api/savings/[id] - Delete savings record
 - Responsive data table with edit/delete
 - Empty state with CTA
 
-### Module 3: Budget Events (Priority: HIGH - Next Phase)
-Features to implement:
-- [ ] Create wedding events/acara (flexible, not hardcoded)
-- [ ] Add budget items per event
-- [ ] Dynamic payment tracking (DP, Termin 1, 2, 3, ...)
-- [ ] Auto-calculate: total paid & remaining amount
-- [ ] Progress bars per item & per event
-- [ ] Summary totals (workspace level)
-- [ ] Donut chart: budget allocation per event
-- [ ] Bar chart: payment progress (dibayar vs sisa)
+### Module 3: Budget Events ✅ DONE
+Features implemented:
+- [x] Create wedding events/acara (flexible, not hardcoded)
+- [x] Add budget items per event
+- [x] Dynamic payment tracking (DP, Termin 1, 2, 3, Lunas)
+- [x] Auto-calculate: total paid & remaining amount
+- [x] Progress bars per item & per event
+- [x] Summary totals (workspace level)
+- [x] Pie chart: budget allocation per event
+- [x] Bar chart: payment progress (dibayar vs sisa)
+- [x] Detailed event page with full CRUD
 
-**Estimated API endpoints**:
+**API endpoints**:
 ```
-GET /api/budget/events - List events
+GET /api/budget/events - List events with summaries
 POST /api/budget/events - Create event
+GET /api/budget/events/[id] - Get event details
+DELETE /api/budget/events/[id] - Delete event
 POST /api/budget/events/[id]/items - Add budget item
-POST /api/budget/events/[id]/items/[itemId]/payments - Add payment
-GET /api/budget/summary - Get overall summary
+DELETE /api/budget/items/[id] - Delete item
+POST /api/budget/events/[eventId]/items/[itemId]/payments - Add payment
+DELETE /api/budget/payments/[id] - Delete payment
 ```
 
-**Status**: Framework ready (placeholder page + schema)
+**Status**: Fully functional with:
+- Multi-level CRUD (event → item → payment)
+- Recharts pie chart (allocation per event)
+- Recharts bar chart (progress per item)
+- Responsive detail page
+- Mobile-optimized forms
 
 ### Module 5: List Seserahan (Priority: MEDIUM - Phase 3)
 Features to implement:
@@ -372,16 +381,17 @@ DELETE /api/budget/scenarios/[id] - Delete scenario
 | Phase | Modules | Status | Completed |
 |-------|---------|--------|-----------|
 | 1 | Infra, Auth, Dashboard, Timeline, Budget Scenarios | ✅ DONE | 100% |
-| 2 | Tabungan (✅), Budget Events (📋) | 🔄 50% | 1/2 |
+| 2 | Tabungan (✅), Budget Events (✅) | ✅ COMPLETE | 100% |
 | 3 | Seserahan, Admin, Vendor | 📋 TODO | 0% |
 | 4 | Tamu, Rundown, Lagu, Polish | 📋 TODO | 0% |
 
-**Current Sprint**: Phase 2.2 - Budget Events module (official budget tracking)
+**Modules Implemented: 5/10** ✅ 
+- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events
 
-**Recent Completion (Phase 2.1)**:
-- ✅ Savings module with charts & progress tracking
-- ✅ Dashboard integration
-- ✅ API endpoints (CRUD complete)
+**Recent Completions**:
+- ✅ Phase 2.2: Budget Events (events, items, dynamic payments, charts)
+- ✅ Phase 2.1: Savings tracking (monthly, progress, visualization)
+- ✅ Dashboard: Integrated summaries from all modules
 
 ---
 
