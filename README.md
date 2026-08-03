@@ -149,7 +149,7 @@ prisma/
 
 3. **Configure build command** (optional, sudah ada di vercel.json)
    ```
-   npm run build && npx prisma migrate deploy
+   npx prisma migrate deploy && npm run build
    ```
 
 4. **Deploy**
