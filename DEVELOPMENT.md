@@ -277,13 +277,37 @@ DELETE /api/guests/[id] - Delete category
 
 ---
 
-## 🛠️ Phase 3.3+ - TODO
+## ✅ Phase 3.3 - COMPLETED
 
-### Module 6: List Administrasi
-- [ ] Flexible checklist untuk dokumen administrasi
-- [ ] Custom item creation (bukan hardcoded)
-- [ ] Status: Selesai/Belum
-- [ ] Progress bar jumlah dokumen selesai
+### Module 6: List Administrasi ✅ DONE
+Features implemented:
+- [x] Flexible checklist untuk dokumen administrasi
+- [x] Custom item creation (bukan hardcoded)
+- [x] Status: PENDING/COMPLETED dengan toggle
+- [x] Progress bar jumlah dokumen selesai
+- [x] Summary cards (total, completed, progress %)
+- [x] Delete dengan confirmation dialog
+- [x] Click-to-toggle completion status
+
+**API endpoints**:
+```
+GET /api/admin - List items with summary (totalCount, completedCount, progressPercent)
+POST /api/admin - Create admin item
+PATCH /api/admin/[id] - Update item status
+DELETE /api/admin/[id] - Delete item
+```
+
+**Status**: Fully functional with:
+- Progress bar visualization
+- Checklist style with circle icons (empty/filled)
+- Strike-through completed items
+- Mobile-responsive layout
+- Dark mode support
+- Dashboard integration
+
+---
+
+## 🛠️ Phase 3.4+ - TODO
 
 ### Module 7: Kontak Vendor
 - [ ] Vendor management dengan kategori
@@ -292,7 +316,7 @@ DELETE /api/guests/[id] - Delete category
 - [ ] Filter by status & kategori
 - [ ] Notes field untuk catatan tambahan
 
-### Module 9: Rundown Acara
+### Module 9: Rundown Acara (Skipped - Optional)
 - [ ] Event-based rundown (per acara)
 - [ ] Timeline vertical view
 - [ ] Fields: waktu, kegiatan, PIC, keterangan, catatan
@@ -443,6 +467,14 @@ PATCH /api/guests/[id] - Update category counts
 DELETE /api/guests/[id] - Delete category
 ```
 
+### Administrasi (Admin Documents)
+```
+GET /api/admin - List items with summary
+POST /api/admin - Create admin item
+PATCH /api/admin/[id] - Update item status
+DELETE /api/admin/[id] - Delete item
+```
+
 ---
 
 ## 🐛 Known Issues & Limitations
@@ -462,17 +494,18 @@ DELETE /api/guests/[id] - Delete category
 | 2 | Tabungan (✅), Budget Events (✅) | ✅ COMPLETE | 100% |
 | 3.1 | Seserahan (✅) | ✅ COMPLETE | 100% |
 | 3.2 | Tamu (✅) | ✅ COMPLETE | 100% |
-| 3.3+ | Admin, Vendor, Rundown, Lagu | 📋 TODO | 0% |
+| 3.3 | Administrasi (✅) | ✅ COMPLETE | 100% |
+| 3.4+ | Vendor, Lagu | 📋 TODO | 0% |
 
-**Modules Implemented: 7/10** ✅ 
-- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan, Tamu
+**Modules Implemented: 8/10** ✅ 
+- Dashboard, Timeline, Budget Scenarios, Tabungan, Budget Events, Seserahan, Tamu, Administrasi
 
 **Recent Completions**:
+- ✅ Phase 3.3: List Administrasi (document checklist, progress tracking)
 - ✅ Phase 3.2: List Tamu (guest categories, groom/bride breakdown, comparison chart)
 - ✅ Phase 3.1: Seserahan (gifts, categories, status tracking, visualizations)
 - ✅ Phase 2.2: Budget Events (events, items, dynamic payments, charts)
 - ✅ Phase 2.1: Savings tracking (monthly, progress, visualization)
-- ✅ Dashboard: Integrated summaries from all modules
 
 ---
 
@@ -494,7 +527,9 @@ app/
 │   │   └── page.tsx           # Seserahan/gifts (DONE)
 │   ├── guests/
 │   │   └── page.tsx           # Guest management (DONE)
-│   ├── admin/ + vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
+│   ├── admin/
+│   │   └── page.tsx           # Administration checklist (DONE)
+│   ├── vendors/ + rundown/ + songs/  # Placeholder modules (TODO)
 │   └── layout.tsx             # Protected layout + navigation
 │
 ├── (auth)/                     # Public routes
@@ -517,6 +552,7 @@ app/
 │   ├── savings/               # Savings endpoints (DONE)
 │   ├── gifts/                 # Gifts endpoints (DONE)
 │   ├── guests/                # Guests endpoints (DONE)
+│   ├── admin/                 # Admin endpoints (DONE)
 │   └── dashboard/             # Summary data
 │
 ├── components/                # Reusable UI
