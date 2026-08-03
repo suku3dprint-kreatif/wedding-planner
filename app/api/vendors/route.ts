@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getWorkspaceId } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/db';
+import type { VendorStatus } from '@/app/generated/prisma/enums';
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
     const vendors = await prisma.vendor.findMany({
       where: {
         workspaceId,
-        ...(status && { status }),
+        ...(status && { status: status as VendorStatus }),
         ...(category && { category }),
       },
       orderBy: { createdAt: 'asc' },
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         category,
-        phone,
+        phoneNumber: phone,
         status,
         notes: notes || null,
         workspaceId,

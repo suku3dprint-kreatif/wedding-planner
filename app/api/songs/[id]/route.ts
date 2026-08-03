@@ -4,7 +4,7 @@ import { prisma } from '@/app/lib/db';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -17,7 +17,7 @@ export async function PATCH(
 
     const song = await prisma.song.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -33,7 +33,7 @@ export async function PATCH(
     const { title, artist, category } = body;
 
     const updatedSong = await prisma.song.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         ...(title && { title }),
         ...(artist && { artist }),
@@ -53,7 +53,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -66,7 +66,7 @@ export async function DELETE(
 
     const song = await prisma.song.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -79,7 +79,7 @@ export async function DELETE(
     }
 
     await prisma.song.delete({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     return NextResponse.json({ message: 'Lagu berhasil dihapus' });

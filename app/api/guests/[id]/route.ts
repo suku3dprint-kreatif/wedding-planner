@@ -4,7 +4,7 @@ import { prisma } from '@/app/lib/db';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -17,7 +17,7 @@ export async function PATCH(
 
     const category = await prisma.guestCategory.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -33,7 +33,7 @@ export async function PATCH(
     const { name, groomCount, brideCount } = body;
 
     const updatedCategory = await prisma.guestCategory.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         ...(name && { name }),
         ...(groomCount !== undefined && { groomCount: Math.max(0, parseInt(groomCount) || 0) }),
@@ -53,7 +53,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -66,7 +66,7 @@ export async function DELETE(
 
     const category = await prisma.guestCategory.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -79,7 +79,7 @@ export async function DELETE(
     }
 
     await prisma.guestCategory.delete({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     return NextResponse.json({ message: 'Kategori tamu berhasil dihapus' });

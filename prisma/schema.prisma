@@ -225,7 +225,7 @@ model Vendor {
 
 enum VendorStatus {
   PLANNING
-  CONFIRMED
+  CONTRACTED
 }
 
 // Module 8: List Tamu

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getWorkspaceId } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/db';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const workspaceId = await getWorkspaceId();
 
@@ -43,10 +43,6 @@ export async function GET(request: NextRequest) {
     });
 
     const giftItems = await prisma.giftItem.findMany({
-      where: { workspaceId },
-    });
-
-    const guestCategories = await prisma.guestCategory.findMany({
       where: { workspaceId },
     });
 
@@ -105,7 +101,7 @@ export async function GET(request: NextRequest) {
     ).length;
 
     const adminCompleted = adminItems.filter(
-      (item) => item.status === 'COMPLETED'
+      (item) => item.status === true
     ).length;
 
     const vendorContracted = vendors.filter(
