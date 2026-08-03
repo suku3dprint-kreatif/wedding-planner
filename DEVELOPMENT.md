@@ -89,16 +89,30 @@
 - `POST /api/budget/scenarios/[id]/set-official` - Set as official
 - `DELETE /api/budget/scenarios/[id]` - Delete scenario
 
-#### 4-10. Placeholder Modules
-- [x] Budget Events page (framework ready)
-- [x] Target Tabungan placeholder
-- [x] List Seserahan placeholder
-- [x] List Administrasi placeholder
-- [x] Kontak Vendor placeholder
-- [x] List Tamu placeholder
-- [x] List Lagu placeholder
+#### 4. Target Tabungan (Savings) ✅
+- Create monthly savings records for groom & bride
+- Calculate accumulated savings vs budget target
+- Track progress toward wedding date
+- Visualizations: Bar chart (monthly), Composed chart (accumulated)
+- On-track indicator vs timeline
+- Dashboard integration
 
-**Status**: Placeholder UI ready, database schema ready, API endpoints pending
+**Status**: Fully functional  
+**APIs**:
+- `GET /api/savings` - List records with summary
+- `POST /api/savings` - Create savings record
+- `PATCH /api/savings/[id]` - Update record
+- `DELETE /api/savings/[id]` - Delete record
+
+#### 5-10. Placeholder Modules
+- [ ] Budget Events page (framework ready - Phase 2.2)
+- [ ] List Seserahan placeholder
+- [ ] List Administrasi placeholder
+- [ ] Kontak Vendor placeholder
+- [ ] List Tamu placeholder
+- [ ] List Lagu placeholder
+
+**Status**: Placeholder UI ready, database schema ready, API endpoints pending (Phase 3+)
 
 ### Code Quality
 - [x] TypeScript strict mode
@@ -119,27 +133,35 @@
 
 ---
 
-## 🚀 Phase 2 - IN PROGRESS
+## ✅ Phase 2 - COMPLETED
 
-### Module 4: Target Tabungan (Priority: HIGH)
-Features to implement:
-- [ ] Monthly savings input form (groom & bride amounts separately)
-- [ ] Automatic calculation of total accumulated savings
-- [ ] Comparison dengan budget target
-- [ ] Monthly savings tracking visualization
-- [ ] Progress indicator jika tertinggal dari timeline
-- [ ] Database: SavingsRecord queries & mutations
+### Module 4: Target Tabungan ✅ DONE
+Features implemented:
+- [x] Monthly savings input form (groom & bride amounts separately)
+- [x] Automatic calculation of total accumulated savings
+- [x] Comparison dengan budget target
+- [x] Monthly savings tracking visualization (Bar & Composed charts)
+- [x] Progress indicator jika tertinggal dari timeline
+- [x] Database: SavingsRecord queries & mutations
+- [x] Dashboard integration dengan savings progress
 
-**Estimated API endpoints**:
+**API endpoints**:
 ```
-GET /api/savings - List all monthly records
-POST /api/savings - Add monthly savings
-PATCH /api/savings/[month]/[year] - Update amounts
-DELETE /api/savings/[month]/[year] - Delete record
-GET /api/savings/summary - Get summary vs target
+GET /api/savings - List all records with summary & metrics
+POST /api/savings - Add monthly savings (with duplicate prevention)
+PATCH /api/savings/[id] - Update savings record
+DELETE /api/savings/[id] - Delete savings record
 ```
 
-### Module 3: Budget Events (Priority: HIGH)
+**Status**: Fully functional with:
+- Recharts bar chart (monthly breakdown per person)
+- Recharts composed chart (monthly + accumulated)
+- On-track indicator vs timeline
+- Dashboard card showing savings progress
+- Responsive data table with edit/delete
+- Empty state with CTA
+
+### Module 3: Budget Events (Priority: HIGH - Next Phase)
 Features to implement:
 - [ ] Create wedding events/acara (flexible, not hardcoded)
 - [ ] Add budget items per event
@@ -159,7 +181,9 @@ POST /api/budget/events/[id]/items/[itemId]/payments - Add payment
 GET /api/budget/summary - Get overall summary
 ```
 
-### Module 5: List Seserahan (Priority: MEDIUM)
+**Status**: Framework ready (placeholder page + schema)
+
+### Module 5: List Seserahan (Priority: MEDIUM - Phase 3)
 Features to implement:
 - [ ] Create gift items dengan kategori/tags custom
 - [ ] Price input dengan Rupiah formatting
@@ -168,6 +192,8 @@ Features to implement:
 - [ ] Group display by kategori (collapsible)
 - [ ] Total harga seserahan otomatis
 - [ ] Checklist interface
+
+**Status**: Schema ready, UI/API pending
 
 ---
 
@@ -341,14 +367,21 @@ DELETE /api/budget/scenarios/[id] - Delete scenario
 
 ---
 
-## 📅 Estimated Timeline
+## 📅 Development Progress
 
-| Phase | Modules | Status | Est. Days | Target Date |
-|-------|---------|--------|-----------|-------------|
-| 1 | Infra, Auth, Dashboard, Timeline, Budget Scenarios | ✅ DONE | 2 | 2026-08-03 |
-| 2 | Tabungan, Budget Events | 🔄 IN PROGRESS | 3 | 2026-08-06 |
-| 3 | Seserahan, Admin, Vendor | 📋 TODO | 3 | 2026-08-09 |
-| 4 | Tamu, Rundown, Lagu, Polish | 📋 TODO | 3 | 2026-08-12 |
+| Phase | Modules | Status | Completed |
+|-------|---------|--------|-----------|
+| 1 | Infra, Auth, Dashboard, Timeline, Budget Scenarios | ✅ DONE | 100% |
+| 2 | Tabungan (✅), Budget Events (📋) | 🔄 50% | 1/2 |
+| 3 | Seserahan, Admin, Vendor | 📋 TODO | 0% |
+| 4 | Tamu, Rundown, Lagu, Polish | 📋 TODO | 0% |
+
+**Current Sprint**: Phase 2.2 - Budget Events module (official budget tracking)
+
+**Recent Completion (Phase 2.1)**:
+- ✅ Savings module with charts & progress tracking
+- ✅ Dashboard integration
+- ✅ API endpoints (CRUD complete)
 
 ---
 
