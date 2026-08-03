@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getWorkspaceId } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/db';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const workspaceId = await getWorkspaceId();
     if (!workspaceId) {

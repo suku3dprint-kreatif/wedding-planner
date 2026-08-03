@@ -18,7 +18,7 @@ export async function GET() {
     });
 
     const completedCount = items.filter(
-      (item) => item.status === 'COMPLETED'
+      (item) => item.status === true
     ).length;
 
     const progressPercent =
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     const item = await prisma.administrationItem.create({
       data: {
         name,
-        status: 'PENDING',
+        status: false,
         workspaceId,
       },
     });

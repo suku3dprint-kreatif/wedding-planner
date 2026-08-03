@@ -23,7 +23,7 @@ const navItems = [
   { label: 'Tabungan', href: '/savings', icon: Target },
   { label: 'Seserahan', href: '/gifts', icon: Gift },
   { label: 'Administrasi', href: '/admin', icon: FileText },
-  { label: 'Vendor', href: '/vendor', icon: Phone },
+  { label: 'Vendor', href: '/vendors', icon: Phone },
   { label: 'Tamu', href: '/guests', icon: Users },
   { label: 'Lagu', href: '/songs', icon: Music },
 ];

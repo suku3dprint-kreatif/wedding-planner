@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { clearWorkspaceCookie } from '@/app/lib/auth';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     await clearWorkspaceCookie();
     return NextResponse.json({ message: 'Logout berhasil' }, { status: 200 });

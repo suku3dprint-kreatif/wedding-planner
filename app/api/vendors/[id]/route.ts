@@ -4,7 +4,7 @@ import { prisma } from '@/app/lib/db';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -17,7 +17,7 @@ export async function PATCH(
 
     const vendor = await prisma.vendor.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -33,11 +33,11 @@ export async function PATCH(
     const { name, category, phone, status, notes } = body;
 
     const updatedVendor = await prisma.vendor.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         ...(name && { name }),
         ...(category && { category }),
-        ...(phone && { phone }),
+        ...(phone && { phoneNumber: phone }),
         ...(status && { status }),
         ...(notes !== undefined && { notes }),
       },
@@ -55,7 +55,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -68,7 +68,7 @@ export async function DELETE(
 
     const vendor = await prisma.vendor.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -81,7 +81,7 @@ export async function DELETE(
     }
 
     await prisma.vendor.delete({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     return NextResponse.json({ message: 'Vendor berhasil dihapus' });

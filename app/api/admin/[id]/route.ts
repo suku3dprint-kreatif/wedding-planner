@@ -4,7 +4,7 @@ import { prisma } from '@/app/lib/db';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -17,7 +17,7 @@ export async function PATCH(
 
     const item = await prisma.administrationItem.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -32,7 +32,7 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    if (!status) {
+    if (typeof status !== 'boolean') {
       return NextResponse.json(
         { message: 'Status harus diisi' },
         { status: 400 }
@@ -40,7 +40,7 @@ export async function PATCH(
     }
 
     const updatedItem = await prisma.administrationItem.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: { status },
     });
 
@@ -56,7 +56,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const workspaceId = await getWorkspaceId();
@@ -69,7 +69,7 @@ export async function DELETE(
 
     const item = await prisma.administrationItem.findFirst({
       where: {
-        id: params.id,
+        id: (await params).id,
         workspaceId,
       },
     });
@@ -82,7 +82,7 @@ export async function DELETE(
     }
 
     await prisma.administrationItem.delete({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     return NextResponse.json({ message: 'Dokumen berhasil dihapus' });
